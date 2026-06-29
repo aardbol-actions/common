@@ -10,7 +10,7 @@
 [![Tag](https://img.shields.io/github/v/tag/aardbol-actions/common)](https://github.com/aardbol-actions/common/tags)
 [![License](https://img.shields.io/github/license/aardbol-actions/common)](./LICENSE)
 
-This repository contains the common Actions and config files for developing the Red Hat GitHub Actions. This repository has been forked to implement the latest dependency versions and apply security fixes.
+This repository contains the common Actions and config files for developing the Red Hat GitHub Actions. This repository has been forked to implement the latest dependency versions and security fixes.
 
 - [action-io-generator](./action-io-generator) is an NPM package and (soon to be) Docker Action that makes sure your JavaScript action uses the same Inputs and Outputs defined in your `action.yml`.
 - [bundle-verifier](./bundle-verifier) is a JavaScript Action that makes sure your JavaScript action's committed distribution bundle is up-to-date.
