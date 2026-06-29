@@ -1,8 +1,8 @@
 # Red Hat Actions Common
 
-[![action-io-generator CI](https://github.com/aardbol/common/workflows/action-io-generator%20CI/badge.svg)](https://github.com/aardbol/common/actions)
-[![bundle-verifier CI](https://github.com/aardbol/common/workflows/bundle-verifier%20CI/badge.svg)](https://github.com/aardbol/common/actions)
-[![commit-data CI](https://github.com/aardbol/common/workflows/commit-data%20CI/badge.svg)](https://github.com/aardbol/common/actions)
+[![action-io-generator CI](https://github.com/aardbol/common/actions/workflows/ci-action-io-generator.yml/badge.svg)](https://github.com/aardbol/common/actions/workflows/ci-action-io-generator.yml)
+[![bundle-verifier CI](https://github.com/aardbol/common/actions/workflows/verify-verifier.yml/badge.svg)](https://github.com/aardbol/common/actions/workflows/verify-verifier.yml)
+[![commit-data CI](https://github.com/aardbol/common/actions/workflows/ci-commit-data.yml/badge.svg)](https://github.com/aardbol/common/actions/workflows/ci-commit-data.yml)
 
 [![Tag](https://img.shields.io/github/v/tag/aardbol/common)](https://github.com/aardbol/common/tags)
 [![License](https://img.shields.io/github/license/aardbol/common)](./LICENSE)

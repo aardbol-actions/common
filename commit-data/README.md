@@ -1,6 +1,6 @@
 # Commit Data Action
 
-[![commit-data CI](https://github.com/aardbol/common/workflows/commit-data%20CI/badge.svg)](https://github.com/aardbol/common/actions)
+[![commit-data CI](https://github.com/aardbol/common/actions/workflows/ci-commit-data.yml/badge.svg)](https://github.com/aardbol/common/actions/workflows/ci-commit-data.yml)
 
 [![Tag](https://img.shields.io/github/v/tag/aardbol/common)](https://github.com/aardbol/common/tags)
 [![License](https://img.shields.io/github/license/aardbol/common)](./LICENSE)

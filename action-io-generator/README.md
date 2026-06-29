@@ -1,6 +1,6 @@
 ## GitHub Action Input-Output Generator
 
-[![action-io-generator CI](https://github.com/aardbol/common/workflows/action-io-generator%20CI/badge.svg)](https://github.com/aardbol/common/actions)
+[![action-io-generator CI](https://github.com/aardbol/common/actions/workflows/ci-action-io-generator.yml/badge.svg)](https://github.com/aardbol/common/actions/workflows/ci-action-io-generator.yml)
 
 [![npm badge](https://img.shields.io/npm/v/@redhat-actions/action-io-generator)](https://www.npmjs.com/package/@redhat-actions/action-io-generator)
 [![Tag](https://img.shields.io/github/v/tag/aardbol/common)](https://github.com/aardbol/common/tags)
