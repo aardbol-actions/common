@@ -8,9 +8,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:redhat-actions/common.git"
+    "url": "git@github.com:aardbol/common.git"
   },
-  "author": "tetchell@redhat.com",
+  "author": "Red Hat",
   "license": "MIT",
   "peerDependencies": {
     "@types/terser-webpack-plugin": ">= 5",

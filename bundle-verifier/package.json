@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "GitHub Action to verify the committed bundle is up-to-date with the source",
   "main": "index.js",
-  "author": "",
+  "author": "Red Hat",
   "license": "MIT",
   "scripts": {
     "compile": "tsc -p .",
-    "bundle": "ncc build src/index.ts --source-map --minify"
+    "bundle": "ncc build src/index.ts --source-map --minify",
+    "lint": "eslint . --max-warnings=0"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",

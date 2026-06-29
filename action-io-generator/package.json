@@ -5,15 +5,15 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/tetchel/action-io-generator.git"
+    "url": "git@github.com:aardbol/common.git"
   },
   "bin": "bin.js",
-  "author": "tetchell@redhat.com",
+  "author": "Red Hat",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tetchel/action-io-generator/issues"
+    "url": "https://github.com/aardbol/common/issues"
   },
-  "homepage": "https://github.com/tetchel/action-io-generator#readme",
+  "homepage": "https://github.com/aardbol/common#readme",
   "scripts": {
     "compile": "tsc -p .",
     "bundle": "npx webpack --mode=production && cp -v bin.js dist/",
