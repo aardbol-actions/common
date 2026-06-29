@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@aardbol-actions/tsconfig": "^2.0.0",
-    "@aardbol-actions/webpack-config": "^1.1.0",
+    "@aardbol-actions/webpack-config": "^1.1.1",
     "@eslint/js": "^10.0.1",
     "@types/js-yaml": "^4.0.9",
     "@types/minimist": "^1.2.5",
