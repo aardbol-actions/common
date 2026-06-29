@@ -1,4 +1,6 @@
 name: Link checker
+permissions:
+  contents: read
 on:
   push:
     paths:

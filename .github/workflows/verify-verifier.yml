@@ -1,4 +1,6 @@
 name: bundle-verifier CI
+permissions:
+  contents: read
 on:
   push:
   pull_request:

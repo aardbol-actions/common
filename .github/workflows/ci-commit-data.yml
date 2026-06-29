@@ -1,4 +1,6 @@
 name: commit-data CI
+permissions:
+  contents: read
 on:
   push:
   pull_request:

@@ -1,5 +1,7 @@
 
 name: action-io-generator CI
+permissions:
+  contents: read
 on:
   push:
   pull_request:
