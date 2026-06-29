@@ -2,6 +2,8 @@
 
 set -e -o pipefail
 
+git config --global --add safe.directory /github/workspace
+
 if [[ $INPUT_WORKING_DIRECTORY ]]; then
     echo "Working directory is $INPUT_WORKING_DIRECTORY"
     cd $INPUT_WORKING_DIRECTORY
