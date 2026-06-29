@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/usr/bin/env bash
 
 set -e -o pipefail
 
@@ -43,11 +43,11 @@ else
     echo "$tags_count tags point to this commit: $tags"
 fi
 
-echo "::set-output name=branch::${branch}"
-echo "::set-output name=is_pr::${is_pr}"
-echo "::set-output name=pr_head::${pr_head}"
-echo "::set-output name=pr_base::${pr_base}"
-echo "::set-output name=short_sha::$short_sha"
-echo "::set-output name=tag::$tag"
-echo "::set-output name=tags::$tags"
-echo "::set-output name=tag_count::$tags_count"
+echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
+echo "is_pr=${is_pr}" >> "${GITHUB_OUTPUT}"
+echo "pr_head=${pr_head}" >> "${GITHUB_OUTPUT}"
+echo "pr_base=${pr_base}" >> "${GITHUB_OUTPUT}"
+echo "short_sha=${short_sha}" >> "${GITHUB_OUTPUT}"
+echo "tag=${tag}" >> "${GITHUB_OUTPUT}"
+echo "tags=${tags}" >> "${GITHUB_OUTPUT}"
+echo "tags_count=${tags_count}" >> "${GITHUB_OUTPUT}"
