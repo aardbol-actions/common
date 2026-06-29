@@ -19,25 +19,13 @@ repos:
       - id: install-deps
         name: install-deps
         language: system
-        entry: >
-          bash -c '
-            for dir in action-io-generator bundle-verifier; do
-              if git diff --cached --name-only | grep -q "^$dir/package\.json"; then
-                (cd "$dir" && npm install && git add -v "$dir/package-lock.json")
-              fi
-            done
-          '
+        entry: make install
         pass_filenames: false
-        files: ^(action-io-generator|bundle-verifier)/package\.json$
+        files: ^(action-io-generator|bundle-verifier)/(package\.json|package-lock\.json)$
 
-      - id: compile
-        name: compile
+      - id: bundle
+        name: bundle
         language: system
-        entry: >
-          bash -c '
-            for dir in action-io-generator bundle-verifier; do
-              (cd "$dir" && npm run compile)
-            done
-          '
+        entry: bash -c 'make bundle && git add -v action-io-generator/dist/ bundle-verifier/dist/'
         pass_filenames: false
-        files: ^(action-io-generator|bundle-verifier)/src/
+        files: ^(action-io-generator|bundle-verifier)/(src/|package\.json|package-lock\.json)$
