@@ -1,3 +1,4 @@
+out/
 *.tsbuildinfo
 node_modules/
 .zed/
