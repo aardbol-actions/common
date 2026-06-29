@@ -30,7 +30,7 @@
     "@redhat-actions/webpack-config": "^1.1.0",
     "@types/js-yaml": "^4.0.9",
     "@types/minimist": "^1.2.5",
-    "@types/node": "^22.0.0",
+    "@types/node": "^26.0.1",
     "@types/terser-webpack-plugin": "^5.2.0",
     "eslint": "^10.6.0",
     "ts-loader": "^9.5.1",
