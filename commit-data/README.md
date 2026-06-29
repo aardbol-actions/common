@@ -1,9 +1,9 @@
 # Commit Data Action
 
-[![commit-data CI](https://github.com/redhat-actions/common/workflows/commit-data%20CI/badge.svg)](https://github.com/redhat-actions/common/actions)
+[![commit-data CI](https://github.com/aardbol/common/workflows/commit-data%20CI/badge.svg)](https://github.com/aardbol/common/actions)
 
-[![Tag](https://img.shields.io/github/v/tag/redhat-actions/common)](https://github.com/redhat-actions/common/tags)
-[![License](https://img.shields.io/github/license/redhat-actions/common)](./LICENSE)
+[![Tag](https://img.shields.io/github/v/tag/aardbol/common)](https://github.com/aardbol/common/tags)
+[![License](https://img.shields.io/github/license/aardbol/common)](./LICENSE)
 
 This is a small action which captures some logic I'd find myself needing in lots of different workflows.
 
