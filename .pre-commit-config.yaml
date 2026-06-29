@@ -16,6 +16,20 @@ repos:
 
   - repo: local
     hooks:
+      - id: install-deps
+        name: install-deps
+        language: system
+        entry: >
+          bash -c '
+            for dir in action-io-generator bundle-verifier; do
+              if git diff --cached --name-only | grep -q "^$dir/package\.json"; then
+                (cd "$dir" && npm install && git add -v "$dir/package-lock.json")
+              fi
+            done
+          '
+        pass_filenames: false
+        files: ^(action-io-generator|bundle-verifier)/package\.json$
+
       - id: compile
         name: compile
         language: system
