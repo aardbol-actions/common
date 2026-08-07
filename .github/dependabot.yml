@@ -50,6 +50,14 @@ updates:
       interval: daily
 
   - package-ecosystem: github-actions
+    commit-message:
+      prefix: chore(actions)
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
+      day: monday
+    groups:
+      codeql:
+        patterns:
+          - "github/codeql-action/*"
+
