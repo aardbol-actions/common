@@ -17,13 +17,15 @@ echo "Generating inputs and outputs enum in $file_name"
 set -x
 
 npx action-io-generator --outFile=$file_name
-git --no-pager diff --no-index --exit-code $INPUT_IO_FILE $file_name
-diff_exit_code=$?
 
 set +x
+
+git --no-pager diff --no-index --exit-code $INPUT_IO_FILE $file_name
+diff_exit_code=$?
 
 if [[ $diff_exit_code -eq 0 ]]; then
     echo "✅ Inputs and Outputs are configured correctly!"
 else
     echo "❌ Inputs and Outputs are not configured correctly!"
+    exit 1
 fi

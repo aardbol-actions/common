@@ -1,0 +1,78 @@
+name: podman-entitlement CI
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'podman-entitlement/**'
+      - '.github/workflows/ci-podman-entitlement.yml'
+  pull_request:
+    paths:
+      - 'podman-entitlement/**'
+      - '.github/workflows/ci-podman-entitlement.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-secrets-exist:
+    # Workaround https://github.com/actions/runner/issues/1138
+    name: Check that subscription credential secrets have been set
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    outputs:
+      have_secrets: ${{ steps.check.outputs.have_secrets }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${SECRETS_ORG}" -a -n "${SECRETS_ACTIVATIONKEY}" ] ; then
+            echo "have_secrets=1" >> $GITHUB_OUTPUT
+          fi
+        env:
+          SECRETS_ORG: ${{ secrets.redhat_org }}
+          SECRETS_ACTIVATIONKEY: ${{ secrets.redhat_activationkey }}
+
+  podman:
+    name: Test podman with Red Hat entitlements
+    needs: [ test-secrets-exist ]
+    if: needs.test-secrets-exist.outputs.have_secrets == 1
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on:
+          - ubuntu-26.04
+          - ubuntu-26.04-arm
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+        include:
+          - runs-on: ubuntu-26.04
+            image: registry.access.redhat.com/ubi9
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Build image without entitlements, expect fail
+        run: if podman build ./podman-entitlement/test ; then false ; fi
+
+      - name: Enable entitlements for rootless podman
+        uses: ./podman-entitlement/
+        with:
+          org: ${{ secrets.redhat_org }}
+          activationkey: ${{ secrets.redhat_activationkey }}
+        if: matrix.image == ''
+
+      - name: Enable entitlements for rootless podman with custom image
+        uses: ./podman-entitlement/
+        with:
+          org: ${{ secrets.redhat_org }}
+          activationkey: ${{ secrets.redhat_activationkey }}
+          image: ${{ matrix.image }}
+        if: matrix.image != ''
+
+      - name: Build image with entitlements
+        run: podman build ./podman-entitlement/test
+

@@ -1,11 +1,16 @@
-
 name: action-io-generator CI
 permissions:
   contents: read
 on:
   push:
     branches: [main]
+    paths:
+      - 'action-io-generator/**'
+      - '.github/workflows/ci-action-io-generator.yml'
   pull_request:
+    paths:
+      - 'action-io-generator/**'
+      - '.github/workflows/ci-action-io-generator.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,6 +27,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
       - run: npm ci
       - run: npm run lint
 
@@ -34,26 +42,31 @@ jobs:
       WORKDIR: "./action-io-generator"
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
 
       - name: Install
         working-directory: ${{ env.WORKDIR }}
         run: npm ci
 
       - name: Verify Latest Bundle
-        uses: redhat-actions/common/bundle-verifier@a7e9fd367034e38805280ad71d9cc35e2d9f6f9d # v1
+        uses: ./bundle-verifier
         with:
           bundle_file: ${{ env.BUNDLE_FILE }}
           bundle_command: ${{ env.BUNDLE_COMMAND }}
           working_directory: ${{ env.WORKDIR }}
-  
+
   test:
     name: Test
     runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
 
       - run: npm ci
-      - run: npm run lint
       - run: npm run compile
       - run: npm test

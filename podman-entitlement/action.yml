@@ -1,0 +1,53 @@
+name: 'Enable Red Hat entitled podman builds'
+description: 'Register a temporary system with Red Hat subscription and configure podman to use the entitlements'
+inputs:
+  org:
+    description: 'Red Hat account organization'
+    required: true
+  activationkey:
+    description: 'Red Hat account activation key'
+    required: true
+  image:
+    description: 'Container image to use to run subscription-manager register'
+    default: 'registry.access.redhat.com/ubi10'
+runs:
+  using: 'composite'
+  steps:
+    - run: mkdir -p "${GITHUB_WORKSPACE}"/tmp/{etc-pki-entitlement,rhsm}-"${RUN_ID}"
+      env:
+        RUN_ID: ${{ github.run_id }}
+      shell: bash
+    - run: |
+        # run subscription-manager in container to get entitlement files
+        NAME=$( echo "$RUN_URL" | sed 's#^https://##;s#/#-#g' )
+        podman run --rm --name="$NAME" \
+          -v "${GITHUB_WORKSPACE}/tmp/etc-pki-entitlement-${RUN_ID}":/etc/pki/entitlement-out:z \
+          -v "${GITHUB_WORKSPACE}/tmp/rhsm-${RUN_ID}":/etc/rhsm-out:z \
+          -e SM_ORG="$INPUTS_ORG" \
+          -e SM_KEY="$INPUTS_ACTIVATIONKEY" \
+          -e SYSTEM_NAME="$NAME" \
+          "$INPUTS_IMAGE" \
+          bash -c 'trap "/usr/sbin/subscription-manager unregister" EXIT ; \
+                   /usr/sbin/subscription-manager register \
+                     --org="$SM_ORG" \
+                     --activationkey="$SM_KEY" \
+                     --name="$SYSTEM_NAME" \
+                   && cp /etc/pki/entitlement/* /etc/pki/entitlement-out/ \
+                   && cp -r /etc/rhsm/ca /etc/rhsm/rhsm.conf /etc/rhsm-out'
+      env:
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        RUN_ID: ${{ github.run_id }}
+        INPUTS_IMAGE: ${{ inputs.image }}
+        INPUTS_ORG: ${{ inputs.org }}
+        INPUTS_ACTIVATIONKEY: ${{ inputs.activationkey }}
+      shell: bash
+    - run: |
+        # set up $HOME/.config/containers/mounts.conf configuration
+        mkdir -p "$HOME/.config/containers"
+        for i in etc-pki-entitlement rhsm ; do echo "${GITHUB_WORKSPACE}/tmp/$i-${RUN_ID}:/run/secrets/$i" ; done > "${GITHUB_WORKSPACE}/tmp/mounts-${RUN_ID}.conf"
+        if [ -e "$HOME/.config/containers/mounts.conf" ] ; then mv -f "$HOME/.config/containers/mounts.conf" "$HOME/.config/containers/mounts.conf.backup.${RUN_ID}" ; fi
+        rm -f "$HOME/.config/containers/mounts.conf"
+        ln -sv "${GITHUB_WORKSPACE}/tmp/mounts-${RUN_ID}.conf" "$HOME/.config/containers/mounts.conf"
+      env:
+        RUN_ID: ${{ github.run_id }}
+      shell: bash
