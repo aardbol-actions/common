@@ -1,54 +1,5 @@
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: /action-io-generator
-    schedule:
-      interval: daily
-    groups:
-      actions-deps:
-        patterns:
-          - '@actions/*'
-      types:
-        patterns:
-          - '@types/*'
-      redhat-actions:
-        patterns:
-          - '@redhat-actions/*'
-      eslint:
-        patterns:
-          - eslint
-          - '@typescript-eslint/*'
-
-  - package-ecosystem: npm
-    directory: /bundle-verifier
-    schedule:
-      interval: daily
-    groups:
-      actions-deps:
-        patterns:
-          - '@actions/*'
-      types:
-        patterns:
-          - '@types/*'
-      redhat-actions:
-        patterns:
-          - '@redhat-actions/*'
-
-  - package-ecosystem: npm
-    directory: /config-files/eslint
-    schedule:
-      interval: daily
-
-  - package-ecosystem: npm
-    directory: /config-files/tsconfig
-    schedule:
-      interval: daily
-
-  - package-ecosystem: npm
-    directory: /config-files/webpack
-    schedule:
-      interval: daily
-
   - package-ecosystem: github-actions
     commit-message:
       prefix: chore(actions)
@@ -61,3 +12,254 @@ updates:
         patterns:
           - "github/codeql-action/*"
 
+  - package-ecosystem: npm
+    directory: /action-io-generator
+    # Version-update groups: one PR per toolchain family instead of one PR per package.
+    groups:
+      actions-deps:
+        applies-to: version-updates
+        patterns:
+          - '@actions/*'
+
+      types:
+        applies-to: version-updates
+        patterns:
+          - '@types/*'
+
+      redhat-actions:
+        applies-to: version-updates
+        patterns:
+          - '@redhat-actions/*'
+
+      eslint:
+        applies-to: version-updates
+        patterns:
+          - 'eslint'
+
+      # Security update groups override GitHub's default npm_and_yarn mega-PR.
+      # Related families stay grouped; all other advisories open one PR per dependency.
+      actions-deps-security:
+        applies-to: security-updates
+        patterns:
+          - '@actions/*'
+
+      types-security:
+        applies-to: security-updates
+        patterns:
+          - '@types/*'
+
+      redhat-actions-security:
+        applies-to: security-updates
+        patterns:
+          - '@redhat-actions/*'
+
+      eslint-security:
+        applies-to: security-updates
+        patterns:
+          - 'eslint'
+
+    # Conventional commit prefix; scope comes from the updated package name.
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    # Check once per week to limit PR noise; Sunday evening UTC.
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+    # Cap concurrent open version-update PRs; security updates are not limited here.
+    open-pull-requests-limit: 10
+    # Wait for releases to stabilise before opening version-update PRs.
+    # Security advisories are not affected by cooldown.
+    cooldown:
+      default-days: 30
+      semver-patch-days: 30
+      semver-minor-days: 60
+      semver-major-days: 90
+    # Bump package.json ranges to the resolved version (not widen or lock).
+    versioning-strategy: increase
+    # Block automated major version updates; review and merge majors manually.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+
+  - package-ecosystem: npm
+    directory: /bundle-verifier
+    # Version-update groups: one PR per toolchain family instead of one PR per package.
+    groups:
+      actions-deps:
+        applies-to: version-updates
+        patterns:
+          - '@actions/*'
+
+      types:
+        applies-to: version-updates
+        patterns:
+          - '@types/*'
+
+      redhat-actions:
+        applies-to: version-updates
+        patterns:
+          - '@redhat-actions/*'
+
+      # Security update groups override GitHub's default npm_and_yarn mega-PR.
+      # Related families stay grouped; all other advisories open one PR per dependency.
+      actions-deps-security:
+        applies-to: security-updates
+        patterns:
+          - '@actions/*'
+
+      types-security:
+        applies-to: security-updates
+        patterns:
+          - '@types/*'
+
+      redhat-actions-security:
+        applies-to: security-updates
+        patterns:
+          - '@redhat-actions/*'
+
+    # Conventional commit prefix; scope comes from the updated package name.
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    # Check once per week to limit PR noise; Sunday evening UTC.
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+    # Cap concurrent open version-update PRs; security updates are not limited here.
+    open-pull-requests-limit: 10
+    # Wait for releases to stabilise before opening version-update PRs.
+    # Security advisories are not affected by cooldown.
+    cooldown:
+      default-days: 30
+      semver-patch-days: 30
+      semver-minor-days: 60
+      semver-major-days: 90
+    # Bump package.json ranges to the resolved version (not widen or lock).
+    versioning-strategy: increase
+    # Block automated major version updates; review and merge majors manually.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+
+  - package-ecosystem: npm
+    directory: /config-files/eslint
+    # Version-update groups: one PR per toolchain family instead of one PR per package.
+    groups:
+      eslint:
+        applies-to: version-updates
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+
+      # Security update groups override GitHub's default npm_and_yarn mega-PR.
+      # Related families stay grouped; all other advisories open one PR per dependency.
+      eslint-security:
+        applies-to: security-updates
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+
+    # Conventional commit prefix; scope comes from the updated package name.
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    # Check once per week to limit PR noise; Sunday evening UTC.
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+    # Cap concurrent open version-update PRs; security updates are not limited here.
+    open-pull-requests-limit: 10
+    # Wait for releases to stabilise before opening version-update PRs.
+    # Security advisories are not affected by cooldown.
+    cooldown:
+      default-days: 30
+      semver-patch-days: 30
+      semver-minor-days: 60
+      semver-major-days: 90
+    # Bump package.json ranges to the resolved version (not widen or lock).
+    versioning-strategy: increase
+    # Block automated major version updates; review and merge majors manually.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+
+  - package-ecosystem: npm
+    directory: /config-files/tsconfig
+    # Version-update groups: one PR per toolchain family instead of one PR per package.
+    groups:
+      typescript:
+        applies-to: version-updates
+        patterns:
+          - 'typescript'
+
+      # Security update groups override GitHub's default npm_and_yarn mega-PR.
+      # Related families stay grouped; all other advisories open one PR per dependency.
+      typescript-security:
+        applies-to: security-updates
+        patterns:
+          - 'typescript'
+
+    # Conventional commit prefix; scope comes from the updated package name.
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    # Check once per week to limit PR noise; Sunday evening UTC.
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+    # Cap concurrent open version-update PRs; security updates are not limited here.
+    open-pull-requests-limit: 10
+    # Wait for releases to stabilise before opening version-update PRs.
+    # Security advisories are not affected by cooldown.
+    cooldown:
+      default-days: 30
+      semver-patch-days: 30
+      semver-minor-days: 60
+      semver-major-days: 90
+    # Bump package.json ranges to the resolved version (not widen or lock).
+    versioning-strategy: increase
+    # Block automated major version updates; review and merge majors manually.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+
+  - package-ecosystem: npm
+    directory: /config-files/webpack
+    # Conventional commit prefix; scope comes from the updated package name.
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    # Check once per week to limit PR noise; Sunday evening UTC.
+    schedule:
+      interval: weekly
+      day: sunday
+      time: '22:00'
+    # Cap concurrent open version-update PRs; security updates are not limited here.
+    open-pull-requests-limit: 10
+    # Wait for releases to stabilise before opening version-update PRs.
+    # Security advisories are not affected by cooldown.
+    cooldown:
+      default-days: 30
+      semver-patch-days: 30
+      semver-minor-days: 60
+      semver-major-days: 90
+    # Bump package.json ranges to the resolved version (not widen or lock).
+    versioning-strategy: increase
+    # Block automated major version updates; review and merge majors manually.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
