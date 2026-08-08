@@ -3,6 +3,7 @@ permissions:
   contents: read
 on:
   push:
+    branches: [main]
     paths:
       - '**.md'
   pull_request:
@@ -10,6 +11,10 @@ on:
       - '**.md'
   schedule:
     - cron: '0 0 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   markdown-link-check:
