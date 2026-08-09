@@ -12,9 +12,10 @@
 
 This repository contains the common Actions and config files for developing the Red Hat GitHub Actions. This repository has been forked to implement the latest dependency versions and security fixes.
 
-- [action-io-generator](./action-io-generator) is an NPM package and (soon to be) Docker Action that makes sure your JavaScript action uses the same Inputs and Outputs defined in your `action.yml`.
+- [action-io-generator](./action-io-generator) is an NPM package and Docker Action that generates TypeScript enums matching the Inputs and Outputs defined in your `action.yml`.
 - [bundle-verifier](./bundle-verifier) is a JavaScript Action that makes sure your JavaScript action's committed distribution bundle is up-to-date.
 - [commit-data](./commit-data) is a Docker Action that outputs some commonly needed data about the current workflow's HEAD commit.
+- [podman-entitlement](./podman-entitlement) is a composite Action which enables subsequent rootless `podman build`s to consume Red Hat entitlements.
 - [config-files](./config-files) contains our shared TypeScript, ESLint, and Webpack configs.
 
 It is also used for tracking issues that don't fit into another, more specific repository.
