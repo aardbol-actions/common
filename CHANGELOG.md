@@ -1,5 +1,17 @@
 # common Changelog
 
+## v2.1.0
+- Sync with upstream `redhat-actions/common` (v2.1.0).
+- Add `--lineWrap` option to `action-io-generator`.
+- Bump `js-yaml` to 5.2.2 to fix DoS vulnerability.
+- Fix `action-io-generator/entrypoint.sh` to exit 1 when generated enums don't match.
+- Harden `commit-data`: `set -euo pipefail`, exec-form ENTRYPOINT, empty `pr_head`/`pr_base` defaults.
+- Fix `bundle-verifier` input metadata (bundle_file description, drop stale `dist` default).
+- Add `podman-entitlement` composite action, mirrored from upstream.
+- Add community files adapted to aardbol: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`.
+- Add path filters and `actions/setup-node` (Node 24, pinned by SHA) to CI workflows.
+- Bump shared `@aardbol-actions/tsconfig` target to es2022.
+
 ## v2.0.0
 - Update action runtimes to Node24: `bundle-verifier` (node12→node24),
   `action-io-generator` Docker image (node:16-alpine→node:24-alpine),
