@@ -1,9 +1,21 @@
 name: commit-data CI
-permissions:
-  contents: read
 on:
   push:
+    branches: [main]
+    paths:
+      - 'commit-data/**'
+      - '.github/workflows/ci-commit-data.yml'
   pull_request:
+    paths:
+      - 'commit-data/**'
+      - '.github/workflows/ci-commit-data.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   commit_data:
@@ -13,7 +25,7 @@ jobs:
       tag: ${{ steps.commit_data.outputs.tag }}
 
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run commit-data
         id: commit_data
@@ -21,25 +33,3 @@ jobs:
 
       - name: Echo outputs
         run: echo "${{ toJSON(steps.commit_data.outputs) }}"
-
-  # release:
-  #   name: Release
-  #   needs: [ commit_data ]
-  #   runs-on: ubuntu-24.04
-  #   if: needs.commit_data.outputs.tag != ''
-
-  #   steps:
-  #     - name: Create Release
-  #       id: create_release
-  #       uses: actions/create-release@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         tag_name: ${{ needs.commit_data.outputs.tag }}
-
-  #     - name: Echo release URL
-  #       run: |
-  #         export RELEASE_URL=${{ steps.create_release.outputs.html_url }}
-  #         echo "===================== View your release at: ======================"
-  #         echo "===> $RELEASE_URL"
-  #         echo "=================================================================="

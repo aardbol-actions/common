@@ -13,6 +13,7 @@ export async function cli(): Promise<void> {
             s: "silent",
             o: "outFile",
             w: "watch",
+            l: "lineWrap",
         },
         boolean: [ "silent", "watch" ],
     };
@@ -39,5 +40,14 @@ export async function cli(): Promise<void> {
         // but still continue
     }
 
-    await generator(actionYmlFile, outFile, args.watch);
+    let lineWrap: number | undefined;
+    if (args.lineWrap != null) {
+        lineWrap = parseInt(args.lineWrap, 10);
+        if (Number.isNaN(lineWrap) || lineWrap < 40) {
+            console.error(`Fatal: --lineWrap must be an integer >= 40`);
+            process.exit(2);
+        }
+    }
+
+    await generator(actionYmlFile, outFile, args.watch, lineWrap);
 }
