@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-set -e -o pipefail
+set -euo pipefail
 
 git config --global --add safe.directory /github/workspace
 
-if [[ $INPUT_WORKING_DIRECTORY ]]; then
+if [[ -n "${INPUT_WORKING_DIRECTORY:-}" ]]; then
     echo "Working directory is $INPUT_WORKING_DIRECTORY"
-    cd $INPUT_WORKING_DIRECTORY
+    cd "$INPUT_WORKING_DIRECTORY"
 fi
 
 # log the latest commit data
@@ -15,7 +15,7 @@ git log -1
 commit_sha=$(git rev-parse HEAD)
 echo "HEAD commit SHA is $commit_sha"
 
-short_sha=$(echo $commit_sha | cut -c -7)
+short_sha=$(echo "$commit_sha" | cut -c -7)
 echo "Short commit SHA is $short_sha"
 
 branch=$(git branch --show-current)
@@ -30,12 +30,14 @@ if [ -n "${GITHUB_HEAD_REF:-}" ]; then
     echo "This workflow is a PR from ${GITHUB_HEAD_REF} targeting ${GITHUB_BASE_REF}"
 else
     is_pr=false
+    pr_head=""
+    pr_base=""
     echo "Not a PR workflow"
 fi
 
 tags=$(git tag --points-at HEAD | xargs)
-tag=$(echo $tags | awk '{ print $1 }')
-tags_count=$(echo $tags | wc -w | xargs)
+tag=$(echo "$tags" | awk '{ print $1 }')
+tags_count=$(echo "$tags" | wc -w | xargs)
 
 if [ -z "$tags" ]; then
     echo "No tags point to this commit"
