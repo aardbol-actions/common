@@ -15,7 +15,7 @@
     "@eslint/js": "^10.0.1",
     "@aardbol-actions/tsconfig": "^2.0.0",
     "@types/node": "^26.0.1",
-    "@vercel/ncc": "^0.44.0",
+    "@vercel/ncc": "^0.44.1",
     "eslint": "^10.6.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.0",
